@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.inventario.aplicacionInventario.Modelos.ClienteModelo;
 import com.inventario.aplicacionInventario.Modelos.ProductosModelo;
+import com.inventario.aplicacionInventario.Servcios.ClienteServicio;
 import com.inventario.aplicacionInventario.Servcios.ProductosServicio;
 
 @Controller
@@ -18,6 +20,9 @@ public class Controlador {
 
   @Autowired
   private ProductosServicio productosServicio;
+
+  @Autowired
+  private ClienteServicio clienteServicio;
 
   @GetMapping("/")
   public String index() {
@@ -54,10 +59,31 @@ public class Controlador {
   }
 
   @GetMapping("/usuarios")
-  public String usuarios() {
+  public String usuarios(Model model) {
 
-    System.out.println("Entro por usuarios");
+    ClienteModelo cliente = new ClienteModelo();
+    List<ClienteModelo> lista = this.clienteServicio.obtenerClientes();
+
+    model.addAttribute("lista", lista);
+    model.addAttribute("cliente", cliente);
+
     return "usuarios";
+  }
+
+  @PostMapping("/usuarios")
+  public String guardarUsuarios(@ModelAttribute ClienteModelo cliente) {
+
+    this.clienteServicio.guardarClientes(cliente);
+
+    return "redirect:/usuarios";
+  }
+
+  @GetMapping("/usuarios/{id}")
+  public String eliminarUsuarios(@PathVariable("id") Long cliente) {
+
+    this.clienteServicio.eliminarClientes(cliente);
+
+    return "redirect:/usuarios";
   }
 
 }

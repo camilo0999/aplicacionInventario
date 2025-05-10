@@ -69,14 +69,18 @@
             <th scope="col">Nombre</th>
             <th scope="col">Correo</th>
             <th scope="col">Teléfono</th>
+            <th scope="col">Acciones</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>19812132131</td>
-            <td>Carlos Torres</td>
-            <td>carlos@gmail.com</td>
-            <td>31261283213</td>
+          <tr th:each="lista : ${lista}">
+            <td th:text="${lista.cedula}"></td>
+            <td th:text="${lista.nombre}"></td>
+            <td th:text="${lista.correo}"></td>
+            <td th:text="${lista.telefono}"></td>
+            <td>
+              <a th:href="@{'/usuarios/' + ${lista.id}}">Eliminar cliente</a>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -92,22 +96,23 @@
     >
       <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="modalClienteLabel">
-              Registrar Cliente
-            </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Cerrar"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <form>
+          <form th:action="@{/usuarios}" method="post" th:object="${cliente}">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalClienteLabel">
+                Registrar Cliente
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Cerrar"
+              ></button>
+            </div>
+            <div class="modal-body">
               <div class="mb-3">
                 <label for="cedula" class="form-label">Cédula</label>
                 <input
+                  th:field="*{cedula}"
                   type="number"
                   class="form-control"
                   id="cedula"
@@ -117,6 +122,7 @@
               <div class="mb-3">
                 <label for="nombre" class="form-label">Nombre</label>
                 <input
+                  th:field="*{nombre}"
                   type="text"
                   class="form-control"
                   id="nombre"
@@ -126,6 +132,7 @@
               <div class="mb-3">
                 <label for="correo" class="form-label">Correo</label>
                 <input
+                  th:field="*{correo}"
                   type="email"
                   class="form-control"
                   id="correo"
@@ -135,26 +142,27 @@
               <div class="mb-3">
                 <label for="telefono" class="form-label">Teléfono</label>
                 <input
+                  th:field="*{telefono}"
                   type="text"
                   class="form-control"
                   id="telefono"
                   placeholder="Ingrese el teléfono"
                 />
               </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cerrar
-            </button>
-            <button type="button" class="btn btn-primary">
-              Guardar Registro
-            </button>
-          </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cerrar
+              </button>
+              <button type="submit" class="btn btn-primary">
+                Guardar Registro
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
